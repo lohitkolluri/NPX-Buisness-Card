@@ -1,13 +1,7 @@
+
 # Lohit Kolluri's NPX Business Card
 
-This is a Node.js command line interface (CLI) business card created by Lohit Kolluri. The CLI provides options to interact with Lohit, such as sending an email, downloading the resume, scheduling a meeting, and more.
-
-## Table of Contents
-
-- [Features](#features)
-- [Usage](#usage)
-- [Reference](#reference)
-- [License](#license)
+This Node.js command-line interface (CLI) business card, created by Lohit Kolluri, offers various options to interact with him, such as sending an email, downloading the resume, scheduling a meeting, and more.
 
 ## Features
 
@@ -19,8 +13,10 @@ This is a Node.js command line interface (CLI) business card created by Lohit Ko
 
 Run Lohit Kolluri's NPX Business Card directly from the terminal using:
 
-```
+```bash
 npx lohitkolluri
 ```
-## Reference 
-The article written by @jackboberg. I used the same for the reference to deploy the package [Write a Simple npx Business Card](https://studioelsa.se/blog/open-source-oss-npx-business-card). 
+
+## Reference
+
+This NPX Business Card was inspired by an article written by @jackboberg. For more details on creating your own NPX business card, refer to the [Write a Simple npx Business Card](https://studioelsa.se/blog/open-source-oss-npx-business-card) article.
