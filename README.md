@@ -1,22 +1,34 @@
+<h1 align="center" id="title">NPX Buisness Card</h1>
 
-# Lohit Kolluri's NPX Business Card
+<p id="description">This Node.js command-line interface (CLI) business card created by Lohit Kolluri offers various options to interact with him such as sending an email downloading the resume scheduling a meeting and more.</p>
 
-This Node.js command-line interface (CLI) business card, created by Lohit Kolluri, offers various options to interact with him, such as sending an email, downloading the resume, scheduling a meeting, and more.
+  
+  
+<h2>🧐 Features</h2>
 
-## Features
+Here're some of the project's best features:
 
-- Send an email to Lohit.
-- Download Lohit's resume.
-- Schedule a meeting with Lohit.
+*   Send an email to Lohit.
+*   Download Lohit's resume.
+*   Schedule a meeting with Lohit.
 
-## Usage
+<h2>🛠️ Installation Steps:</h2>
 
-Run Lohit Kolluri's NPX Business Card directly from the terminal using:
+<p>1. Run Lohit Kolluri's NPX Business Card directly from the terminal using:</p>
 
-```bash
+```
 npx lohitkolluri
 ```
 
-## Reference
+  
+  
+<h2>💻 Built with</h2>
 
-This NPX Business Card was inspired by an article written by @jackboberg. For more details on creating your own NPX business card, refer to the [Write a Simple npx Business Card](https://studioelsa.se/blog/open-source-oss-npx-business-card) article.
+Technologies used in the project:
+
+*   Node.js
+*   Node Package Manager
+
+<h2>🛡️ License:</h2>
+
+This project is licensed under the MIT License
