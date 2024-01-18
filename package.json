@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lohitkolluri/npx_card.git"
+    "url": "git+https://github.com/lohitkolluri/NPX-Buisness-Card"
   },
   "scripts": {
     "test": "node --no-deprecation card.js",
