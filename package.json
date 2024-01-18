@@ -1,6 +1,6 @@
 {
   "name": "lohitkolluri",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A personal card for Lohit Kolluri",
   "main": "card.js",
   "bin": {
@@ -11,9 +11,9 @@
     "url": "git+https://github.com/lohitkolluri/npx_card.git"
   },
   "scripts": {
-    "test": "node card.js",
+    "test": "node --no-deprecation card.js",
     "pub": "npm version major & npm publish"
-  },
+  },  
   "dependencies": {
     "boxen": "^4.2.0",
     "chalk": "^4.1.0",
