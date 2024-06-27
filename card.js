@@ -8,40 +8,51 @@ const inquirer = require('inquirer');
 const clear = require('clear');
 const open = require('open');
 const fs = require('fs');
-const request = require('request');
+const axios = require('axios');
 const path = require('path');
 const ora = require('ora');
 const cliSpinners = require('cli-spinners');
+const punycode = require('punycode/');
 
 clear();
 
 const prompt = inquirer.createPromptModule();
 
 const EMAIL_URL = 'mailto:lohitkolluri@gmail.com';
-const RESUME_URL = 'https://lohitcdn.blob.core.windows.net/portfoliocdn/Etc/resume.pdf';
+const RESUME_URL = 'https://lohitcdn.blob.core.windows.net/portfoliocdn/Etc/Lohit-Kolluri-Resume-Latest.pdf';
 const MEETING_URL = 'https://calendly.com/lohitkolluri/30min';
 
-const downloadResume = () => {
+const downloadResume = async () => {
   const loader = ora({
     text: ' Downloading Resume',
     spinner: cliSpinners.material,
   }).start();
 
-  const pipe = request(RESUME_URL).pipe(
-    fs.createWriteStream('./Lohit-Kolluri-Resume.pdf')
-  );
+  try {
+    const response = await axios({
+      url: RESUME_URL,
+      method: 'GET',
+      responseType: 'stream',
+    });
 
-  pipe.on('finish', function () {
-    const downloadPath = path.join(process.cwd(), 'Lohit-Kolluri-Resume.pdf');
-    console.log(chalk.green(`\n📥 Resume Downloaded at ${downloadPath}\n`));
-    open(downloadPath);
-    loader.stop();
-  });
+    const writer = fs.createWriteStream('./Lohit-Kolluri-Resume.pdf');
+    response.data.pipe(writer);
 
-  pipe.on('error', function (err) {
+    writer.on('finish', function () {
+      const downloadPath = path.join(process.cwd(), 'Lohit-Kolluri-Resume.pdf');
+      console.log(chalk.green(`\n📥 Resume Downloaded at ${downloadPath}\n`));
+      open(downloadPath);
+      loader.stop();
+    });
+
+    writer.on('error', function (err) {
+      console.error(chalk.red('Error downloading resume:'), err.message);
+      loader.stop();
+    });
+  } catch (err) {
     console.error(chalk.red('Error downloading resume:'), err.message);
     loader.stop();
-  });
+  }
 };
 
 const questions = [
@@ -123,15 +134,6 @@ const tip = [
 ].join('\n');
 console.log(tip);
 
-prompt(questions).then((answer) => {
-  const action = answer.action;
-  if (action === 'quit') {
-    console.log(chalk.gray('Hasta la vista.\n'));
-  } else {
-    actions[action]();
-  }
-});
-
 const actions = {
   email: () => {
     open(EMAIL_URL);
@@ -143,3 +145,12 @@ const actions = {
     console.log(chalk.redBright('\n📅 See you at the meeting!\n'));
   },
 };
+
+prompt(questions).then((answer) => {
+  const action = answer.action;
+  if (action === 'quit') {
+    console.log(chalk.gray('Hasta la vista.\n'));
+  } else {
+    actions[action]();
+  }
+});
