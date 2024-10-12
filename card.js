@@ -12,20 +12,23 @@ const axios = require('axios');
 const path = require('path');
 const ora = require('ora');
 const cliSpinners = require('cli-spinners');
-const punycode = require('punycode/');
 
+// Clear the console for a fresh start
 clear();
 
+// Initialize the prompt
 const prompt = inquirer.createPromptModule();
 
+// URLs for email, resume, and meeting link
 const EMAIL_URL = 'mailto:lohitkolluri@gmail.com';
 const RESUME_URL = 'https://lohitcdn.blob.core.windows.net/portfoliocdn/Etc/Lohit-Kolluri-Resume-Latest.pdf';
 const MEETING_URL = 'https://calendly.com/lohitkolluri/30min';
 
+// Function to handle resume download with loader animation
 const downloadResume = async () => {
   const loader = ora({
-    text: ' Downloading Resume',
-    spinner: cliSpinners.material,
+    text: chalk.cyan('Preparing to download resume...'),
+    spinner: cliSpinners.dots,
   }).start();
 
   try {
@@ -38,68 +41,41 @@ const downloadResume = async () => {
     const writer = fs.createWriteStream('./Lohit-Kolluri-Resume.pdf');
     response.data.pipe(writer);
 
-    writer.on('finish', function () {
+    writer.on('finish', () => {
       const downloadPath = path.join(process.cwd(), 'Lohit-Kolluri-Resume.pdf');
-      console.log(chalk.green(`\n📥 Resume Downloaded at ${downloadPath}\n`));
+      loader.succeed(chalk.green('Resume downloaded successfully!'));
+      console.log(chalk.greenBright(`📥 Resume saved at: ${chalk.underline(downloadPath)}\n`));
       open(downloadPath);
-      loader.stop();
     });
 
-    writer.on('error', function (err) {
-      console.error(chalk.red('Error downloading resume:'), err.message);
-      loader.stop();
+    writer.on('error', (err) => {
+      loader.fail(chalk.red('Failed to download resume.'));
+      console.error(chalk.redBright('Error:'), err.message);
     });
   } catch (err) {
-    console.error(chalk.red('Error downloading resume:'), err.message);
-    loader.stop();
+    loader.fail(chalk.red('Error fetching resume.'));
+    console.error(chalk.redBright('Error:'), err.message);
   }
 };
 
-const questions = [
-  {
-    type: 'list',
-    name: 'action',
-    message: chalk.cyan('What would you like to do?'),
-    choices: [
-      {
-        name: `📧  Send me an ${chalk.green.bold('email')}?`,
-        value: 'email',
-      },
-      {
-        name: `📥  Download my ${chalk.magentaBright.bold('Resume')}?`,
-        value: 'downloadResume',
-      },
-      {
-        name: `📅  Schedule a ${chalk.redBright.bold('Meeting')}?`,
-        value: 'scheduleMeeting',
-      },
-      {
-        name: chalk.gray('🚪  Quit.'),
-        value: 'quit',
-      },
-    ],
-  },
-];
-
+// Profile information box
 const data = {
   name: chalk.bold.green('Lohit Kolluri'),
   handle: chalk.white('@lohitkollluri'),
-  education: `${chalk.white('Student At')} ${chalk
-    .hex('#2b82b2')
-    .bold('SRM University')}`,
+  education: `${chalk.white('Student At')} ${chalk.hex('#2b82b2').bold('SRM University')}`,
   github: chalk.gray('https://github.com/') + chalk.green('lohitkolluri'),
-  linkedin:
-    chalk.gray('https://linkedin.com/in/') + chalk.blue('kollurilohit'),
-  web: chalk.cyan('https://lohitkolluri.tech/'),
+  linkedin: chalk.gray('https://linkedin.com/in/') + chalk.blue('kollurilohit'),
+  web: chalk.cyan('https://lohitkolluri.vercel.app/'),
   npx: chalk.red('npx') + ' ' + chalk.white('lohitkolluri'),
 
   labelWork: chalk.white.bold('Education'),
   labelGitHub: chalk.white.bold('GitHub'),
   labelLinkedIn: chalk.white.bold('LinkedIn'),
-  labelWeb: chalk.white.bold('Web'),
-  labelCard: chalk.white.bold('Card'),
+  labelWeb: chalk.white.bold('Website'),
+  labelCard: chalk.white.bold('Business Card'),
 };
 
+// Display the profile with boxen (enhanced box UI)
 const me = boxen(
   [
     `${data.name}`,
@@ -112,44 +88,73 @@ const me = boxen(
     ``,
     `${data.labelCard}:  ${data.npx}`,
     ``,
-    `${chalk.italic('I am currently looking for new opportunities,')}`,
-    `${chalk.italic('my inbox is always open. Whether you have a')}`,
-    `${chalk.italic('question or just want to say hi, I will try ')}`,
-    `${chalk.italic('my best to get back to you!')}`,
+    chalk.italic('🚀 Currently looking for new opportunities.'),
+    chalk.italic('Feel free to reach out or say hi, I\'ll respond as soon as possible!'),
   ].join('\n'),
   {
-    margin: 1,
-    float: 'center',
     padding: 1,
+    margin: 1,
     borderStyle: 'round',
     borderColor: 'green',
+    float: 'center',
+    backgroundColor: '#333',
   }
 );
 
 console.log(me);
 
-const tip = [
-  `Tip: Try ${chalk.cyanBright.bold('cmd/ctrl + click')} on the links above`,
-  '',
-].join('\n');
-console.log(tip);
+// Action prompt for the user
+const questions = [
+  {
+    type: 'list',
+    name: 'action',
+    message: chalk.cyan('What would you like to do?'),
+    choices: [
+      {
+        name: `📧  Send me an ${chalk.green.bold('Email')}`,
+        value: 'email',
+      },
+      {
+        name: `📥  Download my ${chalk.magentaBright.bold('Resume')}`,
+        value: 'downloadResume',
+      },
+      {
+        name: `📅  Schedule a ${chalk.redBright.bold('Meeting')}`,
+        value: 'scheduleMeeting',
+      },
+      {
+        name: chalk.gray('🚪  Exit'),
+        value: 'quit',
+      },
+    ],
+  },
+];
 
+// Tip message for interactive links
+console.log(
+  chalk.yellowBright(
+    `💡 Tip: You can ${chalk.cyanBright('cmd/ctrl + click')} on the links to open them directly.\n`
+  )
+);
+
+// Actions based on user choice
 const actions = {
   email: () => {
     open(EMAIL_URL);
-    console.log(chalk.green('\n📧 Done, see you soon at inbox.\n'));
+    console.log(chalk.greenBright('📧 Check your inbox, I\'ll get back to you soon!\n'));
   },
   downloadResume: downloadResume,
   scheduleMeeting: () => {
     open(MEETING_URL);
-    console.log(chalk.redBright('\n📅 See you at the meeting!\n'));
+    console.log(chalk.redBright('📅 Meeting scheduled! Looking forward to chatting.\n'));
   },
 };
 
+// Prompt the user for action and execute the corresponding function
 prompt(questions).then((answer) => {
   const action = answer.action;
   if (action === 'quit') {
-    console.log(chalk.gray('Hasta la vista.\n'));
+    console.log(chalk.gray('👋 Goodbye! Have a great day.\n'));
   } else {
     actions[action]();
   }
