@@ -15,14 +15,17 @@
     "pub": "npm version major & npm publish"
   },
   "dependencies": {
-    "axios": "^1.7.2",
-    "boxen": "^4.2.0",
-    "chalk": "^4.1.0",
+    "axios": "^1.7.9",
+    "boxen": "^8.0.1",
+    "chalk": "^5.3.0",
     "clear": "^0.1.0",
     "cli-spinners": "^2.5.0",
-    "inquirer": "^7.3.2",
-    "open": "^7.0.4",
-    "ora": "^5.1.0",
+    "figlet": "^1.8.0",
+    "gradient-string": "^3.0.0",
+    "inquirer": "^12.2.0",
+    "nanospinner": "^1.2.0",
+    "open": "^7.4.2",
+    "ora": "^5.4.1",
     "punycode": "^2.3.1",
     "request": "^2.88.2",
     "uuid": "^10.0.0"
