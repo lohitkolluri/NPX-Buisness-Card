@@ -1,6 +1,6 @@
 {
   "name": "lohitkolluri",
-  "version": "2.1.5",
+  "version": "3.0.0",
   "description": "A personal card for Lohit Kolluri",
   "main": "card.js",
   "bin": {
