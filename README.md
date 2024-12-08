@@ -1,34 +1,64 @@
-<h1 align="center" id="title">NPX Buisness Card</h1>
+<h1 align="center">NPX Business Card</h1>
 
-<p id="description">This Node.js command-line interface (CLI) business card created by Lohit Kolluri offers various options to interact with him such as sending an email downloading the resume scheduling a meeting and more.</p>
+<p align="center">
+  A modern, interactive CLI business card that showcases Lohit Kolluri's portfolio and contact information with beautiful animations and gradient colors.
+</p>
 
-  
-  
-<h2>🧐 Features</h2>
+<p align="center">
+  <img src="https://img.shields.io/npm/v/lohitkolluri" alt="npm version"/>
+  <img src="https://img.shields.io/npm/dt/lohitkolluri" alt="npm downloads"/>
+  <img src="https://img.shields.io/github/license/lohitkolluri/NPX-Buisness-Card" alt="license"/>
+</p>
 
-Here're some of the project's best features:
+## ✨ Features
 
-*   Send an email to Lohit.
-*   Download Lohit's resume.
-*   Schedule a meeting with Lohit.
+- 🎨 Beautiful gradient colors and animations
+- 📧 Direct email contact
+- 📥 Quick resume access
+- 📅 Easy meeting scheduler
+- 🌐 Portfolio website access
+- 💼 Professional links (GitHub, LinkedIn)
+- ⚡ Fast and responsive interface
+- 🎯 User-friendly CLI menu
 
-<h2>🛠️ Installation Steps:</h2>
+## 🚀 Quick Start
 
-<p>1. Run Lohit Kolluri's NPX Business Card directly from the terminal using:</p>
+Run the business card directly in your terminal:
 
-```
+```bash
 npx lohitkolluri
 ```
 
-  
-  
-<h2>💻 Built with</h2>
+No installation needed! Just run the command above and interact with the card.
 
-Technologies used in the project:
+## 💻 Technologies Used
 
-*   Node.js
-*   Node Package Manager
+- **Node.js** - Runtime environment
+- **Chalk** - Terminal styling
+- **Boxen** - Boxes in terminal
+- **Inquirer** - Interactive CLI
+- **Gradient-string** - Beautiful gradients
+- **Figlet** - ASCII art text
+- **Nanospinner** - Loading animations
 
-<h2>🛡️ License:</h2>
+## 🤝 Connect with Lohit
 
-This project is licensed under the MIT License
+- GitHub: [github.com/lohitkolluri](https://github.com/lohitkolluri)
+- LinkedIn: [linkedin.com/in/kollurilohit](https://linkedin.com/in/kollurilohit)
+- Website: [lohit.is-a.dev](https://lohit.is-a.dev)
+- Email: [lohitkolluri@gmail.com](mailto:lohitkolluri@gmail.com)
+
+## 🛡️ License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+## 📝 Changelog
+
+### Version 3.0.0
+- Reduced animation delays for better UX
+- Improved text formatting
+- Updated skill set display
+- Enhanced error handling
+- Added gradient effects
+- Optimized loading times
