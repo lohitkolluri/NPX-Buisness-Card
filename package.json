@@ -8,12 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lohitkolluri/NPX-Buisness-Card.git"
+    "url": "https://github.com/lohitkolluri/NPX-Business-Card.git"
+  },
+  "homepage": "https://github.com/lohitkolluri/NPX-Business-Card",
+  "bugs": {
+    "url": "https://github.com/lohitkolluri/NPX-Business-Card/issues"
   },
   "scripts": {
-    "test": "node --no-deprecation card.js",
-    "pub": "npm version major & npm publish"
+    "test": "jest",
+    "pub": "npm version patch && npm publish"
   },
+  "type": "module",
   "dependencies": {
     "axios": "^1.7.9",
     "boxen": "^8.0.1",
@@ -26,9 +31,10 @@
     "nanospinner": "^1.2.0",
     "open": "^7.4.2",
     "ora": "^5.4.1",
-    "punycode": "^2.3.1",
-    "request": "^2.88.2",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
   },
   "keywords": [
     "card",
@@ -38,6 +44,9 @@
     "npx card",
     "business card"
   ],
-  "author": "Lohit Kolluri <lohitkolluri@gmail.com> (https://lohitkolluri.tech/)",
-  "license": "ISC"
+  "author": "Lohit Kolluri <lohitkolluri@gmail.com> (https://lohit.is-a.dev/)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
 }

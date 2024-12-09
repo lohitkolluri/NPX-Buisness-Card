@@ -3,38 +3,52 @@
 import boxen from 'boxen';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { createWriteStream } from 'fs';
-import { join, dirname } from 'path';
-import axios from 'axios';
-import ora from 'ora';
+import { createSpinner } from 'nanospinner';
 import gradient from 'gradient-string';
 import figlet from 'figlet';
 import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import openURL from 'open';
 import { setTimeout as sleep } from 'timers/promises';
-import { createSpinner } from 'nanospinner';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Clear console
-console.clear();
-
-// Configuration
+// Configuration object with contact information and theme settings
 const CONFIG = {
-  EMAIL_URL: 'mailto:lohitkolluri@gmail.com',
-  RESUME_URL: 'https://drive.google.com/file/u/1/d/1KwoW5uTW2aUEoi14CnM6JGQatup_5aAf/view?usp=sharing',
-  MEETING_URL: 'https://calendly.com/lohitkolluri/30min',
-  PORTFOLIO_URL: 'https://lohit.is-a.dev/',
-  GITHUB_URL: 'https://github.com/lohitkolluri',
-  LINKEDIN_URL: 'https://linkedin.com/in/kollurilohit',
+  PERSONAL_INFO: {
+    NAME: 'Lohit Kolluri',
+    TITLE: 'Full Stack Developer & Student',
+    EDUCATION: 'SRM University',
+    SKILLS: ['DevOps', 'Web Development', 'Cyber Security', 'Machine Learning'],
+  },
+  URLS: {
+    EMAIL: 'mailto:lohitkolluri@gmail.com',
+    RESUME: 'https://drive.google.com/file/u/1/d/1KwoW5uTW2aUEoi14CnM6JGQatup_5aAf/view?usp=sharing',
+    MEETING: 'https://calendly.com/lohitkolluri/30min',
+    PORTFOLIO: 'https://lohit.is-a.dev/',
+    GITHUB: 'https://github.com/lohitkolluri',
+    LINKEDIN: 'https://linkedin.com/in/kollurilohit',
+  },
+  THEME: {
+    BORDER_COLOR: 'green',
+    BG_COLOR: '#1a1a1a',
+    ANIMATION_SPEED: {
+      FAST: 10,
+      MEDIUM: 30,
+      SLOW: 50,
+    },
+  },
 };
 
-// Animation frames for loading
-const frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+// Utility functions
+const createAnimatedSpinner = async (text, duration = 500) => {
+  const spinner = createSpinner(text).start();
+  await sleep(duration);
+  return spinner;
+};
 
-// Animated text typing effect
-const animateText = async (text, speed = 10) => {
+const animateText = async (text, speed = CONFIG.THEME.ANIMATION_SPEED.FAST) => {
   process.stdout.write('\n');
   for (const char of text) {
     process.stdout.write(char);
@@ -43,84 +57,63 @@ const animateText = async (text, speed = 10) => {
   process.stdout.write('\n');
 };
 
-// Loading animation
-const showLoading = async (text, duration = 500) => {
-  const spinner = createSpinner(text).start();
-  await sleep(duration);
-  spinner.success();
-};
-
-// Animated welcome banner with matrix effect
-const showWelcomeBanner = async () => {
+// Component for welcome banner
+const WelcomeBanner = async () => {
+  console.clear();
   console.log('\n');
-  await showLoading('Initializing...', 300);
+  const spinner = await createAnimatedSpinner('Initializing...', 300);
+  spinner.success();
   
   return new Promise((resolve) => {
-    figlet('Lohit Kolluri', {
+    figlet(CONFIG.PERSONAL_INFO.NAME, {
       font: 'Big',
       horizontalLayout: 'default',
       verticalLayout: 'default',
     }, async (err, data) => {
       if (!err) {
-        // Matrix-like animation
         const lines = data.split('\n');
         for (const line of lines) {
           console.log(gradient.rainbow(line));
-          await sleep(30);
+          await sleep(CONFIG.THEME.ANIMATION_SPEED.MEDIUM);
         }
-        await animateText('{ Full Stack Developer & Open Source Enthusiast }', 50);
+        await animateText(
+          `{ ${CONFIG.PERSONAL_INFO.TITLE} }`,
+          CONFIG.THEME.ANIMATION_SPEED.SLOW
+        );
       }
       resolve();
     });
   });
 };
 
-// Enhanced resume viewer with animation
-const downloadResume = async () => {
-  const spinner = createSpinner('Preparing to open resume...').start();
-  await sleep(300);
+// Component for profile card
+const ProfileCard = async () => {
+  const cardData = {
+    name: gradient.pastel(CONFIG.PERSONAL_INFO.NAME),
+    title: chalk.white(CONFIG.PERSONAL_INFO.TITLE),
+    education: `${chalk.white('Student At')} ${gradient.morning(CONFIG.PERSONAL_INFO.EDUCATION)}`,
+    github: `${chalk.white('{')} ${chalk.gray('github.com/')}${chalk.green('lohitkolluri')} ${chalk.white('}')}`,
+    linkedin: `${chalk.white('{')} ${chalk.gray('linkedin.com/in/')}${chalk.blue('kollurilohit')} ${chalk.white('}')}`,
+    web: `${chalk.white('{')} ${chalk.cyan(CONFIG.URLS.PORTFOLIO)} ${chalk.white('}')}`,
+    npx: `${chalk.red('npx')} ${chalk.white('lohitkolluri')}`,
+    skills: gradient.cristal(CONFIG.PERSONAL_INFO.SKILLS.join(' | ')),
+  };
 
-  try {
-    await openURL(CONFIG.RESUME_URL);
-    spinner.success({ text: chalk.green('Resume opened in your browser! 🎉') });
-    await animateText(chalk.gray('Tip: You can download it directly from Google Drive'));
-  } catch (err) {
-    spinner.error({ text: chalk.red('Failed to open resume 😢') });
-    console.error(chalk.red('Error:'), err.message);
-    throw err;
-  }
-};
-
-// Social media links with emojis and animated colors
-const data = {
-  name: gradient.pastel('Lohit Kolluri'),
-  title: chalk.white('Full Stack Developer & Student'),
-  education: `${chalk.white('Student At')} ${gradient.morning('SRM University')}`,
-  github: `${chalk.white('{')} ${chalk.gray('github.com/')}${chalk.green('lohitkolluri')} ${chalk.white('}')}`,
-  linkedin: `${chalk.white('{')} ${chalk.gray('linkedin.com/in/')}${chalk.blue('kollurilohit')} ${chalk.white('}')}`,
-  web: `${chalk.white('{')} ${chalk.cyan('https://lohit.is-a.dev')} ${chalk.white('}')}`,
-  npx: `${chalk.red('npx')} ${chalk.white('lohitkolluri')}`,
-  skills: gradient.cristal('DevOps | Web Web Development | Cyber Security | Machine Learning'),
-};
-
-
-// Animated profile card display
-const showProfileCard = async () => {
   const card = boxen(
     [
-      `${data.name}`,
-      `${data.title}`,
-      ``,
-      `🎓 ${data.education}`,
-      ``,
-      `⚡ Skills: ${data.skills}`,
-      ``,
-      `📦 GitHub:    ${data.github}`,
-      `💼 LinkedIn:  ${data.linkedin}`,
-      `🌐 Website:   ${data.web}`,
-      ``,
-      `📇 Card:      ${data.npx}`,
-      ``,
+      cardData.name,
+      cardData.title,
+      '',
+      `🎓 ${cardData.education}`,
+      '',
+      `⚡ Skills: ${cardData.skills}`,
+      '',
+      `📦 GitHub:    ${cardData.github}`,
+      `💼 LinkedIn:  ${cardData.linkedin}`,
+      `🌐 Website:   ${cardData.web}`,
+      '',
+      `📇 Card:      ${cardData.npx}`,
+      '',
       gradient.passion('🚀 Available for exciting opportunities and collaborations!'),
       gradient.cristal('💭 Let\'s connect and create something amazing together!'),
     ].join('\n'),
@@ -128,112 +121,102 @@ const showProfileCard = async () => {
       padding: 1,
       margin: 1,
       borderStyle: 'round',
-      borderColor: 'green',
+      borderColor: CONFIG.THEME.BORDER_COLOR,
       float: 'center',
-      backgroundColor: '#1a1a1a',
-      title: chalk.green.bold('Digital Business Card'),
+      backgroundColor: CONFIG.THEME.BG_COLOR,
+      title: chalk.green.bold('Lohit\'s Business Card'),
       titleAlignment: 'center',
     }
   );
 
-  // Animate card display
-  const lines = card.split('\n');
-  for (const line of lines) {
+  for (const line of card.split('\n')) {
     console.log(line);
-    await sleep(10);
+    await sleep(CONFIG.THEME.ANIMATION_SPEED.FAST);
   }
 };
 
-// Enhanced menu options with animations
-const questions = [
-  {
-    type: 'list',
-    name: 'action',
-    message: gradient.cristal('What would you like to do?'),
-    choices: [
-      {
-        name: `📧  ${gradient.passion('Send an Email')}`,
-        value: 'email',
-      },
-      {
-        name: `📥  ${gradient.morning('View Resume')}`,
-        value: 'downloadResume',
-      },
-      {
-        name: `📅  ${gradient.fruit('Schedule a Meeting')}`,
-        value: 'scheduleMeeting',
-      },
-      {
-        name: `🌐  ${gradient.teen('Visit Portfolio')}`,
-        value: 'portfolio',
-      },
-      {
-        name: `💻  ${gradient.atlas('View GitHub')}`,
-        value: 'github',
-      },
-      {
-        name: gradient.rainbow('🚪  Exit'),
-        value: 'quit',
-      },
-    ],
-  },
-];
-
-// Enhanced action handlers with animations
-const actions = {
+// Action handlers
+const actionHandlers = {
   email: async () => {
-    const spinner = createSpinner('Opening mail client...').start();
-    await sleep(200);
-    await openURL(CONFIG.EMAIL_URL);
+    const spinner = await createAnimatedSpinner('Opening mail client...');
+    await openURL(CONFIG.URLS.EMAIL);
     spinner.success({ text: gradient.passion('📧 Email client opened!') });
     await animateText(chalk.green('Looking forward to hearing from you!'));
   },
-  downloadResume: downloadResume,
+
+  viewResume: async () => {
+    const spinner = await createAnimatedSpinner('Preparing to open resume...');
+    try {
+      await openURL(CONFIG.URLS.RESUME);
+      spinner.success({ text: chalk.green('Resume opened in your browser! 🎉') });
+      await animateText(chalk.gray('Tip: You can download it directly from Google Drive'));
+    } catch (err) {
+      spinner.error({ text: chalk.red('Failed to open resume 😢') });
+      console.error(chalk.red('Error:'), err.message);
+      throw err;
+    }
+  },
+
   scheduleMeeting: async () => {
-    const spinner = createSpinner('Opening scheduler...').start();
-    await sleep(1000);
-    await openURL(CONFIG.MEETING_URL);
+    const spinner = await createAnimatedSpinner('Opening scheduler...');
+    await openURL(CONFIG.URLS.MEETING);
     spinner.success({ text: gradient.fruit('📅 Scheduler opened!') });
     await animateText(chalk.green('Excited to chat with you soon!'));
   },
-  portfolio: async () => {
-    const spinner = createSpinner('Loading portfolio...').start();
-    await sleep(1000);
-    await openURL(CONFIG.PORTFOLIO_URL);
+
+  viewPortfolio: async () => {
+    const spinner = await createAnimatedSpinner('Loading portfolio...');
+    await openURL(CONFIG.URLS.PORTFOLIO);
     spinner.success({ text: gradient.teen('🌐 Portfolio opened!') });
     await animateText(chalk.green('Hope you enjoy exploring my work!'));
   },
-  github: async () => {
-    const spinner = createSpinner('Opening GitHub...').start();
-    await sleep(1000);
-    await openURL(CONFIG.GITHUB_URL);
+
+  viewGitHub: async () => {
+    const spinner = await createAnimatedSpinner('Opening GitHub...');
+    await openURL(CONFIG.URLS.GITHUB);
     spinner.success({ text: gradient.atlas('💻 GitHub profile opened!') });
     await animateText(chalk.green('Check out my latest projects!'));
   },
 };
 
-// Main function with enhanced animations
+// Menu options
+const menuOptions = [
+  {
+    type: 'list',
+    name: 'action',
+    message: gradient.cristal('What would you like to do?'),
+    choices: [
+      { name: `📧  ${gradient.passion('Send an Email')}`, value: 'email' },
+      { name: `📥  ${gradient.morning('View Resume')}`, value: 'viewResume' },
+      { name: `📅  ${gradient.fruit('Schedule a Meeting')}`, value: 'scheduleMeeting' },
+      { name: `🌐  ${gradient.teen('Visit Portfolio')}`, value: 'viewPortfolio' },
+      { name: `💻  ${gradient.atlas('View GitHub')}`, value: 'viewGitHub' },
+      { name: gradient.rainbow('🚪  Exit'), value: 'quit' },
+    ],
+  },
+];
+
+// Main application
 const main = async () => {
   try {
-    await showWelcomeBanner();
-    await showProfileCard();
+    await WelcomeBanner();
+    await ProfileCard();
     
     console.log(
-      gradient.passion(
-        `\n💡 Tip: Use `) + 
+      gradient.passion('\n💡 Tip: Use ') + 
       chalk.cyan('cmd/ctrl + click') + 
       gradient.passion(' on links to open directly.\n')
     );
 
     while (true) {
-      const { action } = await inquirer.prompt(questions);
+      const { action } = await inquirer.prompt(menuOptions);
       
       if (action === 'quit') {
         await animateText(gradient.rainbow('\n👋 Thanks for stopping by! Have a great day!\n'));
         break;
       }
       
-      await actions[action]();
+      await actionHandlers[action]();
     }
   } catch (error) {
     console.error(chalk.red('\n❌ An error occurred:'), error.message);
@@ -241,5 +224,5 @@ const main = async () => {
   }
 };
 
-// Run the card
+// Run the application
 main().catch(console.error);
