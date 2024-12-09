@@ -25,7 +25,7 @@ const CONFIG = {
   EMAIL_URL: 'mailto:lohitkolluri@gmail.com',
   RESUME_URL: 'https://drive.google.com/file/u/1/d/1KwoW5uTW2aUEoi14CnM6JGQatup_5aAf/view?usp=sharing',
   MEETING_URL: 'https://calendly.com/lohitkolluri/30min',
-  PORTFOLIO_URL: 'https://lohitkolluri.vercel.app/',
+  PORTFOLIO_URL: 'https://lohit.is-a.dev/',
   GITHUB_URL: 'https://github.com/lohitkolluri',
   LINKEDIN_URL: 'https://linkedin.com/in/kollurilohit',
 };
@@ -98,10 +98,11 @@ const data = {
   education: `${chalk.white('Student At')} ${gradient.morning('SRM University')}`,
   github: `${chalk.white('{')} ${chalk.gray('github.com/')}${chalk.green('lohitkolluri')} ${chalk.white('}')}`,
   linkedin: `${chalk.white('{')} ${chalk.gray('linkedin.com/in/')}${chalk.blue('kollurilohit')} ${chalk.white('}')}`,
-  web: `${chalk.white('{')} ${chalk.cyan('lohit.is-a.dev')} ${chalk.white('}')}`,
+  web: `${chalk.white('{')} ${chalk.cyan('https://lohit.is-a.dev')} ${chalk.white('}')}`,
   npx: `${chalk.red('npx')} ${chalk.white('lohitkolluri')}`,
-  skills: gradient.cristal('DevOps | Web Developement | Cyber Security | Machine Learning'),
+  skills: gradient.cristal('DevOps | Web Web Development | Cyber Security | Machine Learning'),
 };
+
 
 // Animated profile card display
 const showProfileCard = async () => {
